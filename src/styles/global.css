@@ -43,6 +43,7 @@
 
   --navbar-height: 72px;
   --topbar-height: 40px;
+  --header-height: calc(var(--topbar-height) + var(--navbar-height));
   --max-width: 1280px;
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -67,6 +68,7 @@ body {
   background: var(--color-white);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  padding-top: var(--header-height);
 }
 
 img { max-width: 100%; height: auto; display: block; }
@@ -83,6 +85,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 .section { padding: 5rem 0; }
 
+/* Site header — fixed so it stays visible while scrolling */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1100;
+}
+
 /* TopBar */
 .topbar {
   background: var(--color-primary);
@@ -91,9 +103,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   height: var(--topbar-height);
   display: flex;
   align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 1100;
 }
 
 .topbar__inner {
@@ -125,9 +134,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 /* Navbar */
 .navbar {
-  position: sticky;
-  top: var(--topbar-height);
-  z-index: 1000;
   height: var(--navbar-height);
   display: flex;
   align-items: center;
@@ -677,12 +683,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* Hero */
 .hero {
   position: relative;
-  min-height: calc(100vh - var(--topbar-height) - var(--navbar-height));
+  min-height: calc(100vh - var(--header-height));
   display: flex;
   align-items: center;
   overflow: hidden;
-  margin-top: calc(-1 * var(--navbar-height));
-  padding-top: var(--navbar-height);
+  margin-top: calc(-1 * var(--header-height));
+  padding-top: var(--header-height);
 }
 
 .hero__bg {
@@ -1302,7 +1308,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 @media (min-width: 1024px) {
   .products-page__sidebar-wrap {
     position: sticky;
-    top: calc(var(--topbar-height) + var(--navbar-height) + 1rem);
+    top: calc(var(--header-height) + 1rem);
     width: auto;
     transform: none;
     pointer-events: auto;
@@ -1337,7 +1343,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 @media (min-width: 1024px) {
   .products-sidebar {
-    max-height: calc(100vh - var(--topbar-height) - var(--navbar-height) - 2rem);
+    max-height: calc(100vh - var(--header-height) - 2rem);
     overflow-y: auto;
   }
 }
@@ -2315,7 +2321,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-radius: var(--radius-xl);
   padding: 0;
   position: sticky;
-  top: calc(var(--topbar-height) + var(--navbar-height) + 1.25rem);
+  top: calc(var(--header-height) + 1.25rem);
   box-shadow: 0 8px 32px rgba(26, 60, 94, 0.1);
   overflow: hidden;
 }

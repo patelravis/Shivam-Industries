@@ -2,9 +2,8 @@ import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { HelmetProvider } from 'react-helmet-async';
-import Navbar from './components/layout/Navbar';
+import SiteHeader from './components/layout/SiteHeader';
 import Footer from './components/layout/Footer';
-import TopBar from './components/layout/TopBar';
 import ScrollToTop from './components/ui/ScrollToTop';
 import InquiryModal from './components/ui/InquiryModal';
 import { InquiryProvider } from './context/InquiryContext';
@@ -64,8 +63,7 @@ function App() {
       <BrowserRouter>
         <InquiryProvider>
           <ScrollToTop />
-          <TopBar />
-          <Navbar />
+          <SiteHeader />
           <AnimatedRoutes />
           <Footer />
           <InquiryModal />

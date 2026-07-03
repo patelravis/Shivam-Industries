@@ -37,7 +37,7 @@ function HeroSection() {
                 <span className="hero__title-accent">Pharma Equipment</span>
               </h1>
               <p className="hero__tagline">
-                {company.tagline} — engineered for cleanrooms, built to last.
+                {company.tagline} — engineered for cleanrooms built to last.
               </p>
               <div className="hero__actions">
                 <Button to="/products" variant="primary" size="lg">Explore Products</Button>

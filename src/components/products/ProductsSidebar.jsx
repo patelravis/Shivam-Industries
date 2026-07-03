@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiChevronDown, FiGrid } from 'react-icons/fi';
+import { FiChevronDown, FiGrid, FiX } from 'react-icons/fi';
 import { products } from '../../data/products';
 import { categories } from '../../data/categories';
 import { handleImageError } from '../../utils/imageHelper';
 
-function ProductsSidebar({ activeCategory, onSelectCategory }) {
+function ProductsSidebar({ activeCategory, onSelectCategory, onClose }) {
   const [expandedCats, setExpandedCats] = useState({});
 
   useEffect(() => {
@@ -29,6 +29,16 @@ function ProductsSidebar({ activeCategory, onSelectCategory }) {
       <div className="products-sidebar__header">
         <FiGrid aria-hidden="true" />
         <span>Categories</span>
+        {onClose && (
+          <button
+            type="button"
+            className="products-sidebar__close"
+            onClick={onClose}
+            aria-label="Close categories"
+          >
+            <FiX />
+          </button>
+        )}
       </div>
 
       <button
@@ -118,6 +128,7 @@ function ProductsSidebar({ activeCategory, onSelectCategory }) {
 ProductsSidebar.propTypes = {
   activeCategory: PropTypes.string.isRequired,
   onSelectCategory: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
 };
 
 export default ProductsSidebar;

@@ -3539,14 +3539,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border: 0;
 }
 
-/* Products results count */
-.products-results-head {
-  justify-content: flex-end;
-}
-
+/* Products results count — mobile-friendly */
 .products-results-head__count {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  margin: 0;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.5;
+  max-width: 100%;
 }
 

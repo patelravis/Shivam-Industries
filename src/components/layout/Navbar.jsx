@@ -33,6 +33,7 @@ function isNavLinkActive(link, location) {
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { openInquiry } = useInquiry();
   const location = useLocation();
@@ -47,8 +48,14 @@ function Navbar() {
 
   useEffect(() => {
     setMobileOpen(false);
+    setMobileProductsOpen(false);
     setDropdownOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    document.body.classList.toggle('nav-open', mobileOpen);
+    return () => document.body.classList.remove('nav-open');
+  }, [mobileOpen]);
 
   return (
     <header className={`navbar ${isSolid ? 'navbar--solid' : ''} ${scrolled ? 'navbar--scrolled' : ''}`}>
@@ -156,6 +163,7 @@ function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 300 }}
+              aria-label="Mobile navigation"
             >
               <button
                 type="button"
@@ -166,13 +174,47 @@ function Navbar() {
                 <FiX />
               </button>
               <nav className="navbar__mobile-nav">
-                <Link to="/" className="navbar__mobile-link">Home</Link>
-                <Link to="/products" className="navbar__mobile-link">Our Products</Link>
+                <Link to="/" className="navbar__mobile-link" onClick={() => setMobileOpen(false)}>Home</Link>
+
+                <button
+                  type="button"
+                  className={`navbar__mobile-link navbar__mobile-link--expand ${mobileProductsOpen ? 'is-open' : ''}`}
+                  onClick={() => setMobileProductsOpen((v) => !v)}
+                  aria-expanded={mobileProductsOpen}
+                >
+                  Our Products
+                  <FiChevronDown aria-hidden="true" />
+                </button>
+                {mobileProductsOpen && (
+                  <div className="navbar__mobile-sub">
+                    <Link to="/products" className="navbar__mobile-sub-link" onClick={() => setMobileOpen(false)}>
+                      All Products
+                    </Link>
+                    {categories.map((cat) => (
+                      <Link
+                        key={cat.slug}
+                        to={`/products?category=${cat.slug}`}
+                        className="navbar__mobile-sub-link"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        {cat.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+
                 {navLinks.slice(1).map((link) => (
-                  <Link key={link.path} to={link.path} className="navbar__mobile-link">
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className="navbar__mobile-link"
+                    onClick={() => setMobileOpen(false)}
+                  >
                     {link.label}
                   </Link>
                 ))}
+                <Link to="/faq" className="navbar__mobile-link" onClick={() => setMobileOpen(false)}>FAQ</Link>
+                <Link to="/blog" className="navbar__mobile-link" onClick={() => setMobileOpen(false)}>Blog</Link>
                 <Button variant="primary" onClick={() => { setMobileOpen(false); openInquiry(); }}>
                   Inquiry Now
                 </Button>

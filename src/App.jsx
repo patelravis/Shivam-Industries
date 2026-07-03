@@ -9,6 +9,7 @@ import ScrollToTop from './components/ui/ScrollToTop';
 import InquiryModal from './components/ui/InquiryModal';
 import { InquiryProvider } from './context/InquiryContext';
 import './styles/global.css';
+import './styles/responsive.css';
 import './styles/animations.css';
 
 const Home = lazy(() => import('./pages/Home'));

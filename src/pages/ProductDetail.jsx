@@ -280,6 +280,15 @@ function ProductDetail() {
           </section>
         )}
       </motion.main>
+
+      <div className="product-detail__mobile-bar" aria-hidden={false}>
+        <Button variant="outline" size="md" to={`/products?category=${product.category}`}>
+          More Products
+        </Button>
+        <Button variant="primary" size="md" onClick={() => openInquiry(product.name)}>
+          Send Inquiry
+        </Button>
+      </div>
     </>
   );
 }

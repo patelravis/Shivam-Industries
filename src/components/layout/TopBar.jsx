@@ -11,7 +11,7 @@ function TopBar() {
             <FiPhone aria-hidden="true" />
             <span>{company.mobile1}</span>
           </a>
-          <a href={`mailto:${company.email}`} className="topbar__link">
+          <a href={`mailto:${company.email}`} className="topbar__link topbar__link--email">
             <FiMail aria-hidden="true" />
             <span>{company.email}</span>
           </a>

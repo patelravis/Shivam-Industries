@@ -24,6 +24,11 @@ function Products() {
     setSearch(urlSearch);
   }, [urlSearch]);
 
+  useEffect(() => {
+    document.body.classList.toggle('sidebar-open', sidebarOpen);
+    return () => document.body.classList.remove('sidebar-open');
+  }, [sidebarOpen]);
+
   const updateSearchParams = (category, searchTerm) => {
     const params = {};
     if (category && category !== 'all') params.category = category;
@@ -131,7 +136,11 @@ function Products() {
           </AnimatePresence>
 
           <div className={`products-page__sidebar-wrap ${sidebarOpen ? 'products-page__sidebar-wrap--open' : ''}`}>
-            <ProductsSidebar activeCategory={activeCategory} onSelectCategory={setCategory} />
+            <ProductsSidebar
+              activeCategory={activeCategory}
+              onSelectCategory={setCategory}
+              onClose={() => setSidebarOpen(false)}
+            />
           </div>
 
           <div className="products-main">

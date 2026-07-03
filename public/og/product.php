@@ -6,7 +6,7 @@
 header('Content-Type: text/html; charset=utf-8');
 
 $slug = preg_replace('/[^a-z0-9-]/', '', $_GET['slug'] ?? '');
-$siteUrl = getenv('SITE_URL') ?: 'https://www.shivamindustries.com';
+$siteUrl = getenv('SITE_URL') ?: 'https://shivamindustries.in';
 $metaFile = dirname(__DIR__) . '/products-meta.json';
 
 $product = null;

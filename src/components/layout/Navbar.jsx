@@ -11,6 +11,7 @@ import { handleImageError } from '../../utils/imageHelper';
 const navLinks = [
   { label: 'Home', path: '/' },
   { label: 'About Us', path: '/about' },
+  { label: 'Services', path: '/services' },
   { label: 'Exhibition & Events', path: '/exhibition' },
   { label: 'Clients', path: '/clients' },
   { label: 'Contact Us', path: '/contact' },
@@ -23,6 +24,7 @@ function isNavLinkActive(link, location) {
   if (link.path === '/') return pathname === '/';
   if (link.path === '/exhibition') return pathname === '/exhibition';
   if (link.path === '/about') return pathname === '/about';
+  if (link.path === '/services') return pathname === '/services';
   if (link.path === '/clients') return pathname === '/clients';
 
   return fullPath === link.path || pathname === link.path;

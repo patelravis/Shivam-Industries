@@ -1,12 +1,13 @@
 import { motion } from 'framer-motion';
-import { FiTarget, FiHeart, FiAward, FiUsers } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import { FiTarget, FiHeart, FiAward, FiUsers, FiCheck } from 'react-icons/fi';
 import Breadcrumb from '../components/ui/Breadcrumb';
 import SectionTitle from '../components/ui/SectionTitle';
 import Button from '../components/ui/Button';
 import SEO from '../components/seo/SEO';
 import { company } from '../data/company';
 import { getProductImage, handleImageError } from '../utils/imageHelper';
-import { buildBreadcrumbSchema } from '../utils/seoHelper';
+import { buildBreadcrumbSchema, buildAboutPageSchema, buildOrganizationSchema } from '../utils/seoHelper';
 import useScrollAnimation from '../hooks/useScrollAnimation';
 
 const timeline = [
@@ -37,20 +38,24 @@ function About() {
   return (
     <>
       <SEO
-        title="About Us"
-        description={`Learn about ${company.name} — ${company.tagline}. 15+ years manufacturing SS 304/316 GMP-compliant pharmaceutical equipment for cleanrooms across India.`}
+        title="About Us — SS Fabrication Experts"
+        description={`About ${company.name} — ${company.yearsExperience}+ years manufacturing SS 304/316 GMP pharma equipment in Ahmedabad, Gujarat. ISO certified, 200+ clients, pan-India delivery.`}
         keywords={[
           'about Shivam Industries',
-          'pharma equipment company India',
-          'SS furniture manufacturer Ahmedabad',
-          'GMP equipment manufacturer',
+          'SS fabrication company Ahmedabad',
+          'pharma equipment manufacturer India',
+          'stainless steel manufacturer Gujarat',
         ]}
         path="/about"
         image={getProductImage('Working Table')}
-        jsonLd={buildBreadcrumbSchema([
-          { name: 'Home', path: '/' },
-          { name: 'About Us', path: '/about' },
-        ])}
+        jsonLd={[
+          buildAboutPageSchema(),
+          buildOrganizationSchema(),
+          buildBreadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'About Us', path: '/about' },
+          ]),
+        ]}
       />
       <motion.main
       initial={{ opacity: 0 }}
@@ -70,12 +75,15 @@ function About() {
           <div className="about-intro__text">
             <SectionTitle align="left" subtitle="Who We Are" title="Crafting Excellence in Pharma Equipment" />
             <p>{company.description}</p>
+            <p>{company.longDescription}</p>
             <p>
               From lockers and garment cupboards to HPLC column cabinets and intermediate bulk containers,
               we manufacture a comprehensive range of stainless steel equipment designed for
-              pharmaceutical, biotech, and healthcare facilities.
+              pharmaceutical, biotech, and healthcare facilities. Our Ahmedabad manufacturing facility
+              supports custom fabrication, bulk production, and pan-India logistics.
             </p>
             <Button to="/products" variant="primary">Explore Products</Button>
+            <Button to="/services" variant="outline" className="about-intro__btn-secondary">Our Services</Button>
           </div>
           <div className="about-intro__image">
             <img
@@ -123,6 +131,50 @@ function About() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section about-certifications">
+        <div className="container">
+          <SectionTitle subtitle="Quality Assurance" title="Certifications & Standards" />
+          <div className="values-grid">
+            {company.certifications.map((cert) => (
+              <div key={cert.name} className="values-card">
+                <FiCheck className="values-card__icon" aria-hidden="true" />
+                <h3>{cert.name}</h3>
+                {cert.doc ? (
+                  <p><a href={cert.doc} target="_blank" rel="noopener noreferrer">View Certificate</a></p>
+                ) : (
+                  <p>Verified manufacturing standard</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section about-industries">
+        <div className="container">
+          <SectionTitle subtitle="Who We Serve" title="Industries Served" />
+          <div className="service-block__tags service-block__tags--center">
+            {company.industriesServed.map((ind) => (
+              <span key={ind} className="service-block__tag">{ind}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section about-process">
+        <div className="container">
+          <SectionTitle subtitle="How We Work" title="Manufacturing Process" />
+          <ol className="about-process__list">
+            {company.manufacturingProcess.map((step, i) => (
+              <li key={step}>
+                <span className="about-process__step">{i + 1}</span>
+                {step}
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 

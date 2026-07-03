@@ -17,6 +17,7 @@ function Inquiry() {
           'SS equipment price inquiry',
         ]}
         path="/inquiry"
+        noindex
         jsonLd={buildBreadcrumbSchema([
           { name: 'Home', path: '/' },
           { name: 'Inquiry', path: '/inquiry' },

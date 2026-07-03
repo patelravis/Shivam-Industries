@@ -7,8 +7,16 @@ import {
   toAbsoluteUrl,
   toAbsoluteImageUrl,
   DEFAULT_KEYWORDS,
-  SITE_URL,
 } from '../../utils/seoHelper';
+
+function getImageMimeType(imagePath) {
+  if (!imagePath) return 'image/png';
+  const lower = imagePath.toLowerCase();
+  if (lower.endsWith('.webp')) return 'image/webp';
+  if (lower.endsWith('.png')) return 'image/png';
+  if (lower.endsWith('.gif')) return 'image/gif';
+  return 'image/jpeg';
+}
 
 function SEO({
   title,
@@ -25,21 +33,26 @@ function SEO({
   const metaKeywords = mergeKeywords(DEFAULT_KEYWORDS, keywords);
   const canonicalUrl = toAbsoluteUrl(path);
   const ogImage = toAbsoluteImageUrl(image || company.logo);
+  const imageType = getImageMimeType(image || company.logo);
   const robots = noindex ? 'noindex, nofollow' : 'index, follow';
 
   const schemas = Array.isArray(jsonLd) ? jsonLd : [jsonLd].filter(Boolean);
 
   return (
     <Helmet>
-      <html lang="en" />
+      <html lang="en-IN" />
       <title>{pageTitle}</title>
       <meta name="description" content={metaDescription} />
       <meta name="keywords" content={metaKeywords} />
       <meta name="author" content={company.name} />
       <meta name="robots" content={robots} />
+      <meta name="geo.region" content="IN-GJ" />
+      <meta name="geo.placename" content="Ahmedabad" />
+      <meta name="geo.position" content={`${company.geo.latitude};${company.geo.longitude}`} />
+      <meta name="ICBM" content={`${company.geo.latitude}, ${company.geo.longitude}`} />
       <link rel="canonical" href={canonicalUrl} />
 
-      {/* Open Graph — WhatsApp, Facebook, LinkedIn */}
+      {/* Open Graph */}
       <meta property="og:site_name" content={company.name} />
       <meta property="og:title" content={pageTitle} />
       <meta property="og:description" content={metaDescription} />
@@ -48,7 +61,7 @@ function SEO({
       <meta property="og:image" content={ogImage} />
       <meta property="og:image:secure_url" content={ogImage} />
       <meta property="og:image:alt" content={title || company.name} />
-      <meta property="og:image:type" content="image/jpeg" />
+      <meta property="og:image:type" content={imageType} />
       <meta property="og:locale" content="en_IN" />
 
       {type === 'product' && title && (
@@ -62,18 +75,18 @@ function SEO({
 
       {/* Twitter / X Card */}
       <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@shivamindustries" />
       <meta name="twitter:title" content={pageTitle} />
       <meta name="twitter:description" content={metaDescription} />
       <meta name="twitter:image" content={ogImage} />
       <meta name="twitter:image:alt" content={title || company.name} />
 
-      {/* WhatsApp specific (uses OG but explicit helps some crawlers) */}
       <meta itemProp="name" content={pageTitle} />
       <meta itemProp="description" content={metaDescription} />
       <meta itemProp="image" content={ogImage} />
 
       {schemas.map((schema, index) => (
-        <script key={`${schema['@type']}-${index}`} type="application/ld+json">
+        <script key={`schema-${index}-${schema['@type']}`} type="application/ld+json">
           {JSON.stringify(schema)}
         </script>
       ))}
@@ -95,5 +108,4 @@ SEO.propTypes = {
   ]),
 };
 
-export { SITE_URL };
 export default SEO;

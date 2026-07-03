@@ -19,6 +19,10 @@ const Contact = lazy(() => import('./pages/Contact'));
 const Inquiry = lazy(() => import('./pages/Inquiry'));
 const Exhibition = lazy(() => import('./pages/Exhibition'));
 const Clients = lazy(() => import('./pages/Clients'));
+const FAQ = lazy(() => import('./pages/FAQ'));
+const Blog = lazy(() => import('./pages/Blog'));
+const Services = lazy(() => import('./pages/Services'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 function PageLoader() {
   return (
@@ -38,11 +42,15 @@ function AnimatedRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/product/:slug" element={<ProductDetail />} />
+          <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/inquiry" element={<Inquiry />} />
           <Route path="/exhibition" element={<Exhibition />} />
           <Route path="/clients" element={<Clients />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </AnimatePresence>

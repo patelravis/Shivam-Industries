@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /inquiry
 
-Sitemap: https://www.shivamindustries.com/sitemap.xml
+Sitemap: https://shivamindustries.in/sitemap.xml

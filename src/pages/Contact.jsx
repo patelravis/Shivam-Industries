@@ -6,7 +6,7 @@ import Button from '../components/ui/Button';
 import SEO from '../components/seo/SEO';
 import { company } from '../data/company';
 import { products } from '../data/products';
-import { buildBreadcrumbSchema } from '../utils/seoHelper';
+import { buildBreadcrumbSchema, buildLocalBusinessSchema, buildContactPageSchema } from '../utils/seoHelper';
 
 function Contact() {
   const [form, setForm] = useState({
@@ -37,19 +37,23 @@ function Contact() {
   return (
     <>
       <SEO
-        title="Contact Us"
-        description={`Contact ${company.name} for pharma equipment quotes. Call ${company.mobile1}, email ${company.email}. Factory: Ahmedabad, Gujarat. Mon–Sat 9AM–6PM.`}
+        title="Contact — Ahmedabad, Gujarat"
+        description={`Contact ${company.name} for SS fabrication & pharma equipment quotes. Call ${company.mobile1}. Factory: Ahmedabad, Gujarat 382433. Mon–Sat 9AM–6PM. Request a quote today.`}
         keywords={[
           'contact Shivam Industries',
-          'pharma equipment quote',
-          'SS furniture supplier Ahmedabad',
-          'pharmaceutical equipment inquiry',
+          'SS fabrication quote Ahmedabad',
+          'pharma equipment supplier Gujarat',
+          'stainless steel manufacturer contact',
         ]}
         path="/contact"
-        jsonLd={buildBreadcrumbSchema([
-          { name: 'Home', path: '/' },
-          { name: 'Contact Us', path: '/contact' },
-        ])}
+        jsonLd={[
+          buildContactPageSchema(),
+          buildLocalBusinessSchema(),
+          buildBreadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Contact Us', path: '/contact' },
+          ]),
+        ]}
       />
       <motion.main
       initial={{ opacity: 0 }}
@@ -70,7 +74,14 @@ function Contact() {
             <div className="contact-card">
               <FiMapPin aria-hidden="true" />
               <h3>Address</h3>
-              <p>{company.address}</p>
+              <p itemScope itemType="https://schema.org/PostalAddress">
+                <span itemProp="streetAddress">{company.addressStructured.streetAddress}</span>,
+                {' '}<span itemProp="addressLocality">{company.addressStructured.addressLocality}</span>,
+                {' '}<span itemProp="addressRegion">{company.addressStructured.addressRegion}</span>
+                {' '}<span itemProp="postalCode">{company.addressStructured.postalCode}</span>,
+                {' '}<span itemProp="addressCountry">{company.addressStructured.addressCountry}</span>
+              </p>
+              <a href={company.mapLink} target="_blank" rel="noopener noreferrer">View on Google Maps</a>
             </div>
             <div className="contact-card">
               <FiPhone aria-hidden="true" />

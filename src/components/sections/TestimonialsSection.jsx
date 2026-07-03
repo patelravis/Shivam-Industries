@@ -3,7 +3,7 @@ import { testimonials, clients } from '../../data/company';
 
 function TestimonialsSection() {
   return (
-    <section className="section testimonials" id="clients">
+    <section className="section testimonials">
       <div className="container">
         <SectionTitle subtitle="Trusted By" title="Our Clients & Testimonials" />
       </div>

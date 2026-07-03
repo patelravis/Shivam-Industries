@@ -1,19 +1,21 @@
 import { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { FiArrowRight } from 'react-icons/fi';
+import { FiArrowRight, FiEye } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import Badge from './Badge';
 import { handleImageError } from '../../utils/imageHelper';
 
-function ProductCard({ product, index = 0 }) {
+function ProductCard({ product, index = 0, variant = 'default' }) {
+  const isCatalog = variant === 'catalog';
+
   return (
     <motion.article
-      className="product-card"
-      initial={{ opacity: 0, y: 30 }}
+      className={`product-card ${isCatalog ? 'product-card--catalog' : ''}`}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.45, delay: (index % 6) * 0.07, ease: [0.22, 1, 0.36, 1] }}
     >
       <Link to={`/product/${product.slug}`} className="product-card__link">
         <div className="product-card__image-wrap">
@@ -25,6 +27,12 @@ function ProductCard({ product, index = 0 }) {
             onError={handleImageError}
           />
           <div className="product-card__overlay" />
+          {isCatalog && (
+            <span className="product-card__quick-view">
+              <FiEye aria-hidden="true" />
+              View Product
+            </span>
+          )}
         </div>
         <div className="product-card__body">
           <Badge variant="gold">{product.categoryName}</Badge>
@@ -49,6 +57,7 @@ ProductCard.propTypes = {
     shortDescription: PropTypes.string,
   }).isRequired,
   index: PropTypes.number,
+  variant: PropTypes.oneOf(['default', 'catalog']),
 };
 
 export default memo(ProductCard);

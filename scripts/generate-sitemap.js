@@ -47,7 +47,7 @@ const products = [...defsBlock.matchAll(
   imagePath: getImagePath(match[1], imageMap),
 }));
 
-const staticRoutes = ['/', '/products', '/about', '/exhibition', '/contact', '/inquiry'];
+const staticRoutes = ['/', '/products', '/about', '/exhibition', '/clients', '/contact', '/inquiry'];
 
 const urls = [
   ...staticRoutes.map((path) => ({ loc: `${SITE_URL}${path}`, priority: path === '/' ? '1.0' : '0.8' })),

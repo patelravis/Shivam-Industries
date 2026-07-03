@@ -93,10 +93,6 @@ function HeroProductShowcase() {
           </div>
         </Link>
       </motion.div>
-
-      <p className="hero-showcase__hint">
-        {prefersReducedMotion ? 'Tap to explore' : 'Move mouse to explore'}
-      </p>
     </div>
   );
 }

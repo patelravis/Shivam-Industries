@@ -18,6 +18,7 @@ const About = lazy(() => import('./pages/About'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Inquiry = lazy(() => import('./pages/Inquiry'));
 const Exhibition = lazy(() => import('./pages/Exhibition'));
+const Clients = lazy(() => import('./pages/Clients'));
 
 function PageLoader() {
   return (
@@ -41,6 +42,7 @@ function AnimatedRoutes() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/inquiry" element={<Inquiry />} />
           <Route path="/exhibition" element={<Exhibition />} />
+          <Route path="/clients" element={<Clients />} />
         </Routes>
       </Suspense>
     </AnimatePresence>

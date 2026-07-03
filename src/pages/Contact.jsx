@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FiMapPin, FiPhone, FiMail, FiClock, FiCheck } from 'react-icons/fi';
 import Breadcrumb from '../components/ui/Breadcrumb';
@@ -7,6 +7,9 @@ import SEO from '../components/seo/SEO';
 import { company } from '../data/company';
 import { products } from '../data/products';
 import { buildBreadcrumbSchema, buildLocalBusinessSchema, buildContactPageSchema } from '../utils/seoHelper';
+
+const INQUIRY_EMAIL = company.inquiryEmail || company.email;
+const FORMSUBMIT_ACTION = `https://formsubmit.co/${encodeURIComponent(INQUIRY_EMAIL)}`;
 
 function Contact() {
   const [form, setForm] = useState({
@@ -19,6 +22,13 @@ function Contact() {
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('contact') === 'sent') {
+      setSubmitted(true);
+    }
+  }, []);
+
   const validate = () => {
     const next = {};
     if (!form.name.trim()) next.name = 'Required';
@@ -30,9 +40,12 @@ function Contact() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validate()) setSubmitted(true);
+    if (!validate()) {
+      e.preventDefault();
+    }
   };
+
+  const returnUrl = `${window.location.origin}/contact?contact=sent`;
 
   return (
     <>
@@ -95,7 +108,7 @@ function Contact() {
             <div className="contact-card">
               <FiMail aria-hidden="true" />
               <h3>Email</h3>
-              <p><a href={`mailto:${company.email}`}>{company.email}</a></p>
+              <p><a href={`mailto:${INQUIRY_EMAIL}`}>{INQUIRY_EMAIL}</a></p>
             </div>
             <div className="contact-card">
               <FiClock aria-hidden="true" />
@@ -113,15 +126,32 @@ function Contact() {
               >
                 <div className="inquiry-success__icon"><FiCheck /></div>
                 <h3>Message Sent!</h3>
-                <p>Thank you for contacting us. We&apos;ll respond shortly.</p>
+                <p>
+                  Thank you for contacting us. Your message was sent to{' '}
+                  <a href={`mailto:${INQUIRY_EMAIL}`}>{INQUIRY_EMAIL}</a>.
+                  We&apos;ll respond shortly.
+                </p>
               </motion.div>
             ) : (
-              <form className="inquiry-form" onSubmit={handleSubmit} noValidate>
+              <form
+                className="inquiry-form"
+                action={FORMSUBMIT_ACTION}
+                method="POST"
+                onSubmit={handleSubmit}
+                noValidate
+              >
                 <h2>Send a Message</h2>
+
+                <input type="hidden" name="_subject" value="[Shivam Industries] Contact Form" />
+                <input type="hidden" name="_template" value="table" />
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_next" value={returnUrl} />
+
                 <div className="inquiry-form__field">
                   <label htmlFor="contact-name">Full Name *</label>
                   <input
                     id="contact-name"
+                    name="name"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     className={errors.name ? 'inquiry-form__input--error' : ''}
@@ -133,6 +163,7 @@ function Contact() {
                     <label htmlFor="contact-email">Email *</label>
                     <input
                       id="contact-email"
+                      name="email"
                       type="email"
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -144,6 +175,7 @@ function Contact() {
                     <label htmlFor="contact-phone">Phone *</label>
                     <input
                       id="contact-phone"
+                      name="phone"
                       value={form.phone}
                       onChange={(e) => setForm({ ...form, phone: e.target.value })}
                       className={errors.phone ? 'inquiry-form__input--error' : ''}
@@ -155,6 +187,7 @@ function Contact() {
                   <label htmlFor="contact-product">Product Interest</label>
                   <select
                     id="contact-product"
+                    name="product"
                     value={form.product}
                     onChange={(e) => setForm({ ...form, product: e.target.value })}
                   >
@@ -168,6 +201,7 @@ function Contact() {
                   <label htmlFor="contact-message">Message *</label>
                   <textarea
                     id="contact-message"
+                    name="message"
                     rows={5}
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}

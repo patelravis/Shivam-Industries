@@ -4,6 +4,10 @@ import { motion } from 'framer-motion';
 import { FiCheck } from 'react-icons/fi';
 import Button from './Button';
 import { products } from '../../data/products';
+import { company } from '../../data/company';
+
+const INQUIRY_EMAIL = company.inquiryEmail || company.email;
+const FORMSUBMIT_ACTION = `https://formsubmit.co/${encodeURIComponent(INQUIRY_EMAIL)}`;
 
 function InquiryForm({ prefillProduct = '', onSuccess, compact = false }) {
   const [form, setForm] = useState({
@@ -22,6 +26,14 @@ function InquiryForm({ prefillProduct = '', onSuccess, compact = false }) {
     }
   }, [prefillProduct]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('inquiry') === 'sent') {
+      setSubmitted(true);
+      onSuccess?.();
+    }
+  }, [onSuccess]);
+
   const validate = () => {
     const next = {};
     if (!form.name.trim()) next.name = 'Name is required';
@@ -32,11 +44,12 @@ function InquiryForm({ prefillProduct = '', onSuccess, compact = false }) {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!validate()) return;
-    setSubmitted(true);
-    onSuccess?.();
+    if (!validate()) {
+      e.preventDefault();
+    }
   };
+
+  const returnUrl = `${window.location.origin}${window.location.pathname}?inquiry=sent`;
 
   if (submitted) {
     return (
@@ -49,17 +62,33 @@ function InquiryForm({ prefillProduct = '', onSuccess, compact = false }) {
           <FiCheck />
         </div>
         <h3>Thank you!</h3>
-        <p>We&apos;ll get back to you soon.</p>
+        <p>
+          Your inquiry has been sent to{' '}
+          <a href={`mailto:${INQUIRY_EMAIL}`}>{INQUIRY_EMAIL}</a>.
+          We&apos;ll get back to you soon.
+        </p>
       </motion.div>
     );
   }
 
   return (
-    <form className={`inquiry-form ${compact ? 'inquiry-form--compact' : ''}`} onSubmit={handleSubmit} noValidate>
+    <form
+      className={`inquiry-form ${compact ? 'inquiry-form--compact' : ''}`}
+      action={FORMSUBMIT_ACTION}
+      method="POST"
+      onSubmit={handleSubmit}
+      noValidate
+    >
+      <input type="hidden" name="_subject" value="[Shivam Industries] Product Inquiry" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="hidden" name="_next" value={returnUrl} />
+
       <div className="inquiry-form__field">
         <label htmlFor="inq-name">Full Name *</label>
         <input
           id="inq-name"
+          name="name"
           type="text"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -73,6 +102,7 @@ function InquiryForm({ prefillProduct = '', onSuccess, compact = false }) {
           <label htmlFor="inq-email">Email *</label>
           <input
             id="inq-email"
+            name="email"
             type="email"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -84,6 +114,7 @@ function InquiryForm({ prefillProduct = '', onSuccess, compact = false }) {
           <label htmlFor="inq-phone">Phone *</label>
           <input
             id="inq-phone"
+            name="phone"
             type="tel"
             value={form.phone}
             onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -98,6 +129,7 @@ function InquiryForm({ prefillProduct = '', onSuccess, compact = false }) {
         {!compact ? (
           <select
             id="inq-product"
+            name="product"
             value={form.product}
             onChange={(e) => setForm({ ...form, product: e.target.value })}
           >
@@ -109,6 +141,7 @@ function InquiryForm({ prefillProduct = '', onSuccess, compact = false }) {
         ) : (
           <input
             id="inq-product"
+            name="product"
             type="text"
             value={form.product}
             onChange={(e) => setForm({ ...form, product: e.target.value })}
@@ -121,6 +154,7 @@ function InquiryForm({ prefillProduct = '', onSuccess, compact = false }) {
         <label htmlFor="inq-message">Message</label>
         <textarea
           id="inq-message"
+          name="message"
           rows={compact ? 3 : 5}
           value={form.message}
           onChange={(e) => setForm({ ...form, message: e.target.value })}
